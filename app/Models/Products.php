@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Products extends Model
 {
     use HasFactory;
 
@@ -19,16 +19,14 @@ class Product extends Model
         'category_id',
     ];
 
-    // Relación: Un producto pertenece a una categoría
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Categories::class, 'category_id');
     }
 
-    // Relación: Un producto tiene muchos detalles de venta
     public function saleDetails()
     {
-        return $this->hasMany(SaleDetail::class);
+        return $this->hasMany(Sale_Details::class, 'product_id');
     }
 }
     
