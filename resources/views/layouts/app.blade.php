@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 @include('layouts.head')
 
@@ -10,6 +10,8 @@
     @include('layouts.sidebar')
 
     <main id="main" class="main">
+
+        @include('shared.flash')
 
         @yield('content')
 

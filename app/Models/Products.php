@@ -10,6 +10,7 @@ class Products extends Model
     use HasFactory;
 
     protected $table = 'products';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -17,6 +18,7 @@ class Products extends Model
         'price',
         'stock',
         'category_id',
+        'image',
     ];
 
     public function category()
@@ -29,4 +31,3 @@ class Products extends Model
         return $this->hasMany(Sale_Details::class, 'product_id');
     }
 }
-    

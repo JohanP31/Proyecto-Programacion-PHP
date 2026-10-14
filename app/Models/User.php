@@ -9,7 +9,7 @@ class User extends Authenticatable
 {
     use HasFactory;
 
-    public $timestamps = false; 
+    public $timestamps = false;
 
     protected $fillable = [
         'name',
@@ -25,7 +25,6 @@ class User extends Authenticatable
     // Relación: Un usuario tiene muchas ventas
     public function sales()
     {
-        return $this->hasMany(Sale::class);
+        return $this->hasMany(Sales::class, 'user_id');
     }
 }
-    

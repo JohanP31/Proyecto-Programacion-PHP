@@ -21,6 +21,27 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## Ejecutar la tienda localmente (Windows)
+
+Desde la carpeta del proyecto, prepara el entorno una sola vez:
+
+```powershell
+composer install
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+if (-not (Test-Path database\database.sqlite)) { New-Item -ItemType File database\database.sqlite | Out-Null }
+php artisan key:generate
+php artisan migrate
+php artisan storage:link
+```
+
+Inicia el servidor local y déjalo corriendo mientras pruebas la tienda:
+
+```powershell
+php artisan serve
+```
+
+Abre `http://127.0.0.1:8000` en el navegador. El catálogo está en `/productos`, el inicio de sesión en `/login` y el panel de administración en `/admin`. El servidor solo es accesible desde esta computadora; para publicarlo en Internet se necesita configurar un servicio de hosting.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
