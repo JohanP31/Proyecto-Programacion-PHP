@@ -24,12 +24,12 @@ class CategoryController extends Controller
     {
         Categories::create($this->validatedData($request));
 
-        return redirect()->route('categories.index')->with('status', 'Categoría creada correctamente.');
+        return redirect()->route('admin.categories.index')->with('status', 'Categoría creada correctamente.');
     }
 
     public function show(Categories $category)
     {
-        return redirect()->route('categories.edit', $category);
+        return redirect()->route('admin.categories.edit', $category);
     }
 
     public function edit(Categories $category)
@@ -41,7 +41,7 @@ class CategoryController extends Controller
     {
         $category->update($this->validatedData($request, $category));
 
-        return redirect()->route('categories.index')->with('status', 'Categoría actualizada correctamente.');
+        return redirect()->route('admin.categories.index')->with('status', 'Categoría actualizada correctamente.');
     }
 
     public function destroy(Categories $category)
@@ -52,7 +52,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->route('categories.index')->with('status', 'Categoría eliminada correctamente.');
+        return redirect()->route('admin.categories.index')->with('status', 'Categoría eliminada correctamente.');
     }
 
     private function validatedData(Request $request, ?Categories $category = null): array
