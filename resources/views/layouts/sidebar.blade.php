@@ -14,6 +14,15 @@
                 <span>Carrito</span>
             </a>
         </li>
+
+        <!-- Opción de Productos para crear (ubicada justo debajo del Carrito) -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('admin.products.create') }}">
+                <i class="bi bi-plus-circle"></i>
+                <span>Productos</span>
+            </a>
+        </li>
+
         @auth
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('sales.index') }}">
@@ -24,9 +33,6 @@
             @if (in_array(mb_strtolower((string) auth()->user()->role), ['admin', 'administrador'], true))
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2"></i><span>Administración</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ route('admin.products.index') }}"><i class="bi bi-box-seam"></i><span>Productos</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="{{ route('admin.categories.index') }}"><i class="bi bi-tags"></i><span>Categorías</span></a>
