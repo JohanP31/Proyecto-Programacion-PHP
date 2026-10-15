@@ -23,7 +23,6 @@
             </a>
         </li>
 
-        {{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
         @auth
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('sales.index') }}">
@@ -43,7 +42,6 @@
                 </li>
             @endif
         @endauth
-        // REACTIVAR EN FUTURAS VERSIONES --}}
     </ul>
 
 </aside>

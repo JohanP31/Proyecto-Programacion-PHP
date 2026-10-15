@@ -1,4 +1,3 @@
-{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 @section('content')
     <div class="pagetitle d-flex justify-content-between">
@@ -28,4 +27,3 @@
         {{ $categories->links() }}
     </div></div>
 @endsection
-// REACTIVAR EN FUTURAS VERSIONES --}}

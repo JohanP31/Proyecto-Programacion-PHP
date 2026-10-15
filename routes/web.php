@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
@@ -32,8 +34,6 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-/*
-// TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 Route::middleware('auth')->group(function () {
     Route::post('/checkout', [SaleController::class, 'store'])->name('sales.store');
     Route::get('/mis-compras', [SaleController::class, 'index'])->name('sales.index');
@@ -48,5 +48,3 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('categories', CategoryController::class)->except('show')->names('categories');
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 });
-// REACTIVAR EN FUTURAS VERSIONES
-*/

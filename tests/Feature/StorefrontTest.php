@@ -64,15 +64,39 @@ class StorefrontTest extends TestCase
             ->assertSessionHas('cart', []);
     }
 
-    public function test_administrators_cannot_open_disabled_product_management_pages(): void
+    public function test_administrators_can_open_product_management_and_create_products(): void
     {
-        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
-            ->get('/admin/products')
-            ->assertNotFound();
+        $category = Categories::create(['name' => 'Libros']);
 
         $this->actingAs(User::factory()->create(['role' => 'Administrador']))
-            ->get('/admin/products')
-            ->assertNotFound();
+            ->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Administrar productos')
+            ->assertSee('Administrar categorías');
+
+        $this->get(route('admin.products.create'))
+            ->assertOk()
+            ->assertSee('Crear producto')
+            ->assertSee('id="name"', false);
+
+        $this->post(route('admin.products.store'), [
+            'name' => 'Libro nuevo',
+            'price' => 12.50,
+            'stock' => 4,
+            'category_id' => $category->id,
+        ])->assertRedirect(route('admin.products.index'));
+
+        $this->assertDatabaseHas('products', [
+            'name' => 'Libro nuevo',
+            'category_id' => $category->id,
+        ]);
+    }
+
+    public function test_customers_are_forbidden_from_product_management(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->get(route('admin.products.index'))
+            ->assertForbidden();
     }
 
     public function test_search_returns_matching_products(): void
@@ -151,7 +175,7 @@ class StorefrontTest extends TestCase
         $this->assertSame(419, $response->getStatusCode());
     }
 
-    public function test_storefront_product_pages_are_available_and_sales_pages_are_disabled(): void
+    public function test_storefront_pages_are_available_and_authenticated_sales_pages_work(): void
     {
         $category = Categories::create(['name' => 'Libros']);
         $product = Products::create([
@@ -177,10 +201,15 @@ class StorefrontTest extends TestCase
         $this->get(route('products.index'))->assertOk()->assertSee('Libro');
         $this->get(route('products.show', $product))->assertOk()->assertSee('Libro');
 
-        $this->get('/admin')->assertNotFound();
-        $this->get('/admin/categories')->assertNotFound();
-        $this->get('/mis-compras')->assertNotFound();
-        $this->post('/checkout')->assertNotFound();
+        $this->get(route('admin.dashboard'))->assertRedirect(route('login'));
+        $this->get(route('admin.categories.index'))->assertRedirect(route('login'));
+        $this->get(route('sales.index'))->assertRedirect(route('login'));
+        $this->post(route('sales.store'))->assertRedirect(route('login'));
+
+        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->get(route('sales.index'))
+            ->assertOk()
+            ->assertSee('Mis compras');
     }
 
     public function test_remember_login_persists_the_remember_token(): void

@@ -1,4 +1,3 @@
-{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 @section('content')
     <div class="pagetitle"><h1>Venta #{{ $sale->id }}</h1></div>
@@ -25,4 +24,3 @@
         @endforelse
     </div></div>
 @endsection
-// REACTIVAR EN FUTURAS VERSIONES --}}
