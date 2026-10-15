@@ -1,3 +1,4 @@
+{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 
 @section('content')
@@ -31,3 +32,4 @@
         {{ $products->links() }}
     </div></div>
 @endsection
+// REACTIVAR EN FUTURAS VERSIONES --}}

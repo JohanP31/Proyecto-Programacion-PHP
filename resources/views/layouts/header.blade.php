@@ -9,16 +9,16 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        <form class="search-form d-flex align-items-center" method="GET" action="{{ route('products.search') }}">
+            <input type="search" name="query" placeholder="Search" title="Enter search keyword" aria-label="Search products" value="{{ is_string(request()->query('query')) ? request()->query('query') : '' }}" maxlength="100" required>
+            <button type="submit" title="Search" aria-label="Search"><i class="bi bi-search"></i></button>
         </form>
     </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
 
-            <li class="nav-item d-block d-lg-none">
+            <li class="nav-item d-block d-xl-none">
                 <a class="nav-link nav-icon search-bar-toggle " href="#">
                     <i class="bi bi-search"></i>
                 </a>

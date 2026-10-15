@@ -20,11 +20,13 @@
                 </tbody>
             </table>
             <p class="text-end fw-bold">Total: ${{ number_format((float) $total, 2) }}</p>
+            {{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
             @auth
                 <form method="POST" action="{{ route('sales.store') }}" class="text-end">@csrf<button class="btn btn-primary">Confirmar compra</button></form>
             @else
                 <p class="text-end"><a class="btn btn-primary" href="{{ route('login') }}">Inicia sesión para comprar</a></p>
             @endauth
+            // REACTIVAR EN FUTURAS VERSIONES --}}
         </div></div>
     @endif
 @endsection

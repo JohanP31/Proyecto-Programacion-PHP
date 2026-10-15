@@ -1,7 +1,9 @@
+{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 <div class="mb-3">
     <label class="form-label" for="name">Nombre</label>
     <input class="form-control" id="name" name="name" value="{{ old('name', $product->name ?? '') }}" maxlength="100" required>
 </div>
+// REACTIVAR EN FUTURAS VERSIONES --}}
 <div class="mb-3">
     <label class="form-label" for="price">Precio</label>
     <input class="form-control" id="price" name="price" type="number" min="0.01" step="0.01" value="{{ old('price', $product->price ?? '') }}" required>

@@ -1,3 +1,4 @@
+{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 @section('content')
     <div class="pagetitle"><h1>Crear producto</h1></div>
@@ -7,3 +8,4 @@
         <div><button class="btn btn-primary">Guardar</button> <a class="btn btn-secondary" href="{{ route('admin.products.index') }}">Cancelar</a></div>
     </form>
 @endsection
+// REACTIVAR EN FUTURAS VERSIONES --}}

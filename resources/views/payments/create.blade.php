@@ -1,3 +1,4 @@
+{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 @section('content')
     <div class="pagetitle"><h1>Registrar pago de venta #{{ $sale->id }}</h1></div>
@@ -19,3 +20,4 @@
         <p class="text-muted mt-3">Este registro no procesa cobros; la confirmación del pago debe realizarse mediante un proveedor o por administración.</p>
     </div></div>
 @endsection
+// REACTIVAR EN FUTURAS VERSIONES --}}

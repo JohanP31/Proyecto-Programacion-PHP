@@ -1,3 +1,4 @@
+{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 @section('content')
     <div class="pagetitle"><h1>{{ in_array(mb_strtolower((string) auth()->user()->role), ['admin', 'administrador'], true) ? 'Historial de ventas' : 'Mis compras' }}</h1></div>
@@ -15,3 +16,4 @@
         {{ $sales->links() }}
     </div></div>
 @endsection
+// REACTIVAR EN FUTURAS VERSIONES --}}

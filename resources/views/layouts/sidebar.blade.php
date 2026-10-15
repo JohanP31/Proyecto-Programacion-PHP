@@ -17,12 +17,13 @@
 
         <!-- Opción de Productos para crear (ubicada justo debajo del Carrito) -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('admin.products.create') }}">
-                <i class="bi bi-plus-circle"></i>
+            <a class="nav-link collapsed" href="{{ route('products.index') }}">
+                <i class="bi bi-box-seam"></i>
                 <span>Productos</span>
             </a>
         </li>
 
+        {{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
         @auth
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('sales.index') }}">
@@ -42,6 +43,7 @@
                 </li>
             @endif
         @endauth
+        // REACTIVAR EN FUTURAS VERSIONES --}}
     </ul>
 
 </aside>

@@ -6,6 +6,7 @@ use App\Models\Categories;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -91,6 +92,50 @@ class ProductController extends Controller
             ->paginate(12);
 
         return view('products.catalog', compact('products'));
+    }
+
+    public function storefrontIndex()
+    {
+        $products = Products::with('category')
+            ->where('stock', '>', 0)
+            ->latest('id')
+            ->paginate(15);
+
+        return view('products.storefront-index', compact('products'));
+    }
+
+    public function search(Request $request, ?Products $product = null)
+    {
+        $input = $request->input('query');
+        $validator = Validator::make(
+            ['query' => is_string($input) ? trim($input) : $input],
+            [
+                'query' => ['required', 'string', 'max:100'],
+            ],
+            [
+                'query.required' => 'Ingresa un término para buscar productos.',
+                'query.max' => 'La búsqueda no puede exceder 100 caracteres.',
+            ],
+        );
+
+        if ($validator->fails()) {
+            $query = is_string($input) ? trim($input) : '';
+            $products = collect();
+            $searchError = $validator->errors()->first('query');
+
+            return view('products.search', compact('products', 'query', 'searchError'));
+        }
+
+        $query = $validator->validated()['query'];
+        $products = Products::with('category')
+            ->where('stock', '>', 0)
+            ->where('name', 'like', "%{$query}%")
+            ->latest('id')
+            ->paginate(12)
+            ->withQueryString();
+        $searchError = null;
+
+        return view('products.search', compact('products', 'query', 'searchError'));
     }
 
     private function validatedData(Request $request): array

@@ -1,3 +1,4 @@
+{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 @section('content')
     <div class="pagetitle"><h1>Administración</h1></div>
@@ -7,3 +8,4 @@
         <div class="col-md-4 mb-3"><a class="card card-body text-decoration-none" href="{{ route('admin.sales.index') }}">Historial de ventas</a></div>
     </div>
 @endsection
+// REACTIVAR EN FUTURAS VERSIONES --}}

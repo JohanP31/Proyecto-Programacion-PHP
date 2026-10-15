@@ -1,3 +1,4 @@
+{{-- // TEMPORALMENTE COMENTADO PARA ENTREGA ACADÉMICA
 @extends('layouts.app')
 
 @section('content')
@@ -680,3 +681,4 @@
         </div>
     </section>
 @endsection
+// REACTIVAR EN FUTURAS VERSIONES --}}
