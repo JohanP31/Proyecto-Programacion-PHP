@@ -34,7 +34,7 @@ class ProductController extends Controller
 
         Products::create($data);
 
-        return redirect()->route('products.index')->with('status', 'Producto creado correctamente.');
+        return redirect()->route('admin.products.index')->with('status', 'Producto creado correctamente.');
     }
 
     public function show(Products $product)
@@ -64,7 +64,7 @@ class ProductController extends Controller
             Storage::disk('public')->delete($previousImage);
         }
 
-        return redirect()->route('products.index')->with('status', 'Producto actualizado correctamente.');
+        return redirect()->route('admin.products.index')->with('status', 'Producto actualizado correctamente.');
     }
 
     public function destroy(Products $product)
@@ -80,7 +80,7 @@ class ProductController extends Controller
             Storage::disk('public')->delete($image);
         }
 
-        return redirect()->route('products.index')->with('status', 'Producto eliminado correctamente.');
+        return redirect()->route('admin.products.index')->with('status', 'Producto eliminado correctamente.');
     }
 
     public function catalog()
