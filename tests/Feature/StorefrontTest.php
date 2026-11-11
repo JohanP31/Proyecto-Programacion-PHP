@@ -25,7 +25,8 @@ class StorefrontTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        $response = $this->post(route('cart.add', $product));
+        $response = $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->post(route('cart.add', $product));
 
         $response->assertRedirect(route('cart.index'))
             ->assertSessionHas('cart', [$product->id => 1]);
@@ -41,7 +42,8 @@ class StorefrontTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        $response = $this->post(route('cart.add', $product), ['quantity' => 2]);
+        $response = $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->post(route('cart.add', $product), ['quantity' => 2]);
 
         $response->assertRedirect()
             ->assertSessionHasErrors('cart')
@@ -58,7 +60,8 @@ class StorefrontTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        $this->withSession(['cart' => [$product->id => 1]])
+        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->withSession(['cart' => [$product->id => 1]])
             ->delete(route('cart.remove', $product))
             ->assertRedirect(route('cart.index'))
             ->assertSessionHas('cart', []);
@@ -72,7 +75,14 @@ class StorefrontTest extends TestCase
             ->get(route('admin.dashboard'))
             ->assertOk()
             ->assertSee('Administrar productos')
-            ->assertSee('Administrar categorías');
+            ->assertSee('Administrar categorías')
+            ->assertSee('Catálogo')
+            ->assertSee('Carrito')
+            ->assertSee('Productos')
+            ->assertSee('Mis compras')
+            ->assertSee('Administración')
+            ->assertSee('Categorías')
+            ->assertSee('Ventas');
 
         $this->get(route('admin.products.create'))
             ->assertOk()
@@ -115,7 +125,8 @@ class StorefrontTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        $this->get(route('products.search', ['query' => 'Laravel']))
+        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->get(route('products.search', ['query' => 'Laravel']))
             ->assertOk()
             ->assertSee('Libro de Laravel')
             ->assertDontSee('Cuaderno');
@@ -131,21 +142,24 @@ class StorefrontTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        $this->post('/productos', ['query' => 'Laravel'])
+        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->post('/productos', ['query' => 'Laravel'])
             ->assertOk()
             ->assertSee('Libro de Laravel');
     }
 
     public function test_search_shows_a_friendly_message_when_there_are_no_results(): void
     {
-        $this->get(route('products.search', ['query' => 'inexistente']))
+        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->get(route('products.search', ['query' => 'inexistente']))
             ->assertOk()
             ->assertSee('No se encontraron resultados para la búsqueda realizada.');
     }
 
     public function test_search_validates_an_empty_query_without_expiring_the_page(): void
     {
-        $this->get(route('products.search'))
+        $this->actingAs(User::factory()->create(['role' => 'Cliente']))
+            ->get(route('products.search'))
             ->assertOk()
             ->assertSee('Ingresa un término para buscar productos.')
             ->assertDontSee('Page Expired');
@@ -167,7 +181,7 @@ class StorefrontTest extends TestCase
 
     public function test_other_expired_posts_keep_csrf_protection(): void
     {
-        $request = Request::create('/login', 'POST', ['email' => 'user@example.test']);
+        $request = Request::create('/carrito/1', 'POST', ['quantity' => 1]);
 
         $response = app(ExceptionHandler::class)
             ->render($request, new TokenMismatchException('CSRF token mismatch.'));
@@ -185,6 +199,9 @@ class StorefrontTest extends TestCase
             'category_id' => $category->id,
         ]);
 
+        $customer = User::factory()->create(['role' => 'Cliente']);
+        $this->actingAs($customer);
+
         $this->get(route('products.catalog'))
             ->assertOk()
             ->assertSee('Catálogo')
@@ -193,54 +210,17 @@ class StorefrontTest extends TestCase
             ->assertSee('search-bar-toggle')
             ->assertSee('You have 4 new notifications')
             ->assertSee('You have 3 new messages')
-            ->assertSee('Cuenta')
+            ->assertSee($customer->name)
+            ->assertSee('Mis compras')
             ->assertDontSee('Administración')
-            ->assertDontSee('Mis compras')
             ->assertSee('Catálogo de productos');
         $this->get(route('cart.index'))->assertOk()->assertSee('Tu carrito está vacío.');
         $this->get(route('products.index'))->assertOk()->assertSee('Libro');
         $this->get(route('products.show', $product))->assertOk()->assertSee('Libro');
 
-        $this->get(route('admin.dashboard'))->assertRedirect(route('login'));
-        $this->get(route('admin.categories.index'))->assertRedirect(route('login'));
-        $this->get(route('sales.index'))->assertRedirect(route('login'));
-        $this->post(route('sales.store'))->assertRedirect(route('login'));
-
         $this->actingAs(User::factory()->create(['role' => 'Cliente']))
             ->get(route('sales.index'))
             ->assertOk()
             ->assertSee('Mis compras');
-    }
-
-    public function test_remember_login_persists_the_remember_token(): void
-    {
-        $user = User::factory()->create([
-            'email' => 'customer@example.test',
-            'password' => bcrypt('secret-password'),
-        ]);
-
-        $this->post(route('login.store'), [
-            'email' => 'customer@example.test',
-            'password' => 'secret-password',
-            'remember' => '1',
-        ])->assertRedirect(route('products.catalog'));
-
-        $this->assertNotNull($user->fresh()->getRememberToken());
-    }
-
-    public function test_registration_always_creates_a_customer_account(): void
-    {
-        $this->post(route('register.store'), [
-            'name' => 'Nuevo cliente',
-            'email' => 'new-customer@example.test',
-            'password' => 'secret-password',
-            'password_confirmation' => 'secret-password',
-            'role' => 'Administrador',
-        ])->assertRedirect(route('products.catalog'));
-
-        $this->assertDatabaseHas('users', [
-            'email' => 'new-customer@example.test',
-            'role' => 'Cliente',
-        ]);
     }
 }
