@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
@@ -9,32 +8,28 @@ use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('/buscar', [ProductController::class, 'search'])->name('products.search');
-Route::post('/buscar', [ProductController::class, 'search'])->name('products.search.submit');
-Route::get('/productos', [ProductController::class, 'catalog'])->name('products.catalog');
-Route::post('/productos', [ProductController::class, 'search'])->name('products.search.legacy');
-Route::get('/lista-productos', [ProductController::class, 'storefrontIndex'])->name('products.index');
-Route::post('/lista-productos', [ProductController::class, 'search'])->name('products.search.legacy-index');
-Route::get('/productos/{product}', [ProductController::class, 'show'])->name('products.show');
-Route::post('/productos/{product}', [ProductController::class, 'search'])
-    ->whereNumber('product')
-    ->name('products.search.legacy-detail');
-
-Route::get('/carrito', [SaleController::class, 'cart'])->name('cart.index');
-Route::post('/carrito', [ProductController::class, 'search'])->name('products.search.legacy-cart');
-Route::post('/carrito/{product}', [SaleController::class, 'addToCart'])->name('cart.add');
-Route::delete('/carrito/{product}', [SaleController::class, 'removeFromCart'])->name('cart.remove');
-
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'createLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.store');
-    Route::get('/registro', [AuthController::class, 'createRegistration'])->name('register');
-    Route::post('/registro', [AuthController::class, 'register'])->name('register.store');
-});
-
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return redirect()->route('home.index');
+    })->name('dashboard');
+
+    Route::get('/buscar', [ProductController::class, 'search'])->name('products.search');
+    Route::post('/buscar', [ProductController::class, 'search'])->name('products.search.submit');
+    Route::get('/productos', [ProductController::class, 'catalog'])->name('products.catalog');
+    Route::post('/productos', [ProductController::class, 'search'])->name('products.search.legacy');
+    Route::get('/lista-productos', [ProductController::class, 'storefrontIndex'])->name('products.index');
+    Route::post('/lista-productos', [ProductController::class, 'search'])->name('products.search.legacy-index');
+    Route::get('/productos/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::post('/productos/{product}', [ProductController::class, 'search'])
+        ->whereNumber('product')
+        ->name('products.search.legacy-detail');
+
+    Route::get('/carrito', [SaleController::class, 'cart'])->name('cart.index');
+    Route::post('/carrito', [ProductController::class, 'search'])->name('products.search.legacy-cart');
+    Route::post('/carrito/{product}', [SaleController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/carrito/{product}', [SaleController::class, 'removeFromCart'])->name('cart.remove');
+
     Route::post('/checkout', [SaleController::class, 'store'])->name('sales.store');
     Route::get('/mis-compras', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/ventas/{sale}', [SaleController::class, 'show'])->name('sales.show');
@@ -48,3 +43,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('categories', CategoryController::class)->except('show')->names('categories');
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 });
+
+require __DIR__.'/auth.php';
