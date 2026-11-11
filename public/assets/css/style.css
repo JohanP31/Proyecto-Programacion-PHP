@@ -1231,3 +1231,15 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+/* Estilo global para las tablas administrativas */
+.admin-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Estilo global para los contenedores de los formularios del CRUD */
+.crud-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
