@@ -12,13 +12,13 @@
             <p>Categoría: {{ $product->category->name }}</p>
             <p>Precio: ${{ number_format((float) $product->price, 2) }}</p>
             <p>Disponibles: {{ $product->stock }}</p>
-            @if ($product->stock > 0)
+            @if ($product->stock > 0 && auth()->user()->hasPermission('cart.add'))
                 <form method="POST" action="{{ route('cart.add', $product) }}" class="d-flex gap-2">
                     @csrf
                     <input class="form-control" type="number" name="quantity" min="1" max="{{ $product->stock }}" value="1" required style="max-width: 100px">
                     <button class="btn btn-primary">Agregar al carrito</button>
                 </form>
-            @else
+            @elseif ($product->stock < 1)
                 <p class="text-danger">Producto agotado.</p>
             @endif
         </div>

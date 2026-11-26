@@ -56,6 +56,13 @@ class AccessControlSeeder extends Seeder
                 'payments.create',
                 'payments.store',
             ],
+            'Cajero' => [
+                'dashboard.view',
+                'products.view',
+                'products.search',
+                'categories.view',
+                'sales.view_all',
+            ],
         ];
 
         foreach ($rolePermissions as $roleName => $assignedPermissions) {
