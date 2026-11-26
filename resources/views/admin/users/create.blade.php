@@ -46,6 +46,7 @@
                                     <option value="">Selecciona un rol...</option>
                                     <option value="Administrador" {{ old('role') == 'Administrador' ? 'selected' : '' }}>Administrador</option>
                                     <option value="Cliente" {{ old('role') == 'Cliente' ? 'selected' : '' }}>Cliente</option>
+                                    <option value="Cajero" {{ old('role') == 'Cajero' ? 'selected' : '' }}>Cajero</option>
                                 </select>
                             </div>
 

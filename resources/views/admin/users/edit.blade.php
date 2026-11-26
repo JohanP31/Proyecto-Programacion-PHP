@@ -46,6 +46,7 @@
                                 <select class="form-select" id="role" name="role" required>
                                     <option value="Administrador" {{ (old('role', $user->role) == 'Administrador' || old('role', $user->role) == 'admin') ? 'selected' : '' }}>Administrador</option>
                                     <option value="Cliente" {{ (old('role', $user->role) == 'Cliente' || old('role', $user->role) == 'cliente') ? 'selected' : '' }}>Cliente</option>
+                                    <option value="Cajero" {{ old('role', $user->role) == 'Cajero' ? 'selected' : '' }}>Cajero</option>
                                 </select>
                             </div>
 

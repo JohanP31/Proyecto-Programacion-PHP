@@ -81,8 +81,8 @@ class StorefrontTest extends TestCase
             ->assertSee('Productos')
             ->assertSee('Mis compras')
             ->assertSee('Administración')
-            ->assertSee('Categorías')
-            ->assertSee('Ventas');
+            ->assertSee(route('admin.categories.index'))
+            ->assertSee(route('admin.sales.index'));
 
         $this->get(route('admin.products.create'))
             ->assertOk()

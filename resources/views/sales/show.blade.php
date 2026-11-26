@@ -16,7 +16,7 @@
         @forelse ($sale->payments as $payment)
             <p>{{ $payment->payment_method }} — ${{ number_format((float) $payment->amount, 2) }} — {{ $payment->status }}</p>
         @empty
-            @if ($sale->user_id === auth()->id())
+            @if ($sale->user_id === auth()->id() && auth()->user()->hasPermission('payments.create'))
                 <a class="btn btn-primary" href="{{ route('payments.create', $sale) }}">Registrar pago</a>
             @else
                 <p>Sin pagos registrados.</p>

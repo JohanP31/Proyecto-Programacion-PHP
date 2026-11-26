@@ -22,10 +22,12 @@
                             <p>${{ number_format((float) $product->price, 2) }}</p>
                             <div class="mt-auto d-flex gap-2">
                                 <a href="{{ route('products.show', $product) }}" class="btn btn-outline-primary">Ver</a>
-                                <form method="POST" action="{{ route('cart.add', $product) }}">
-                                    @csrf
-                                    <button class="btn btn-primary" type="submit">Agregar al carrito</button>
-                                </form>
+                                @if (auth()->user()->hasPermission('cart.add'))
+                                    <form method="POST" action="{{ route('cart.add', $product) }}">
+                                        @csrf
+                                        <button class="btn btn-primary" type="submit">Agregar al carrito</button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>
